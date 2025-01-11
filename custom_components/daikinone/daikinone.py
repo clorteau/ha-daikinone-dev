@@ -404,7 +404,7 @@ class DaikinOne:
                 )
         elif "P1P2UnitType" in payload.data:
             import pprint
-            pprint.pp(payload)
+            log.error(pprint.pformat(payload.data))
 
         # furnace
         if payload.data["ctIFCUnitType"] < 255:
