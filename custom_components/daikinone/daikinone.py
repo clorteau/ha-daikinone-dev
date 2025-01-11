@@ -375,6 +375,9 @@ class DaikinOne:
     def __map_equipment(self, payload: DaikinDeviceDataResponse) -> dict[str, DaikinEquipment]:
         equipment: dict[str, DaikinEquipment] = {}
 
+        import pprint
+        log.error(pprint.pformat(payload))
+
         # air handler
         if "ctAHUnitType" in payload.data:
             if payload.data["ctAHUnitType"] < 255:
@@ -403,8 +406,7 @@ class DaikinOne:
                     power_usage=payload.data["ctIndoorPower"] / 10,
                 )
         elif "P1P2UnitType" in payload.data:
-            import pprint
-            log.error(pprint.pformat(payload.data))
+            log.error("in P1P2UnitType")
 
         # furnace
         if payload.data["ctIFCUnitType"] < 255:
