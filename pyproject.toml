@@ -1,5 +1,5 @@
 [project]
-name = "ha-daikinone"
+name = "ha-daikinone-clem"
 version = "0.1.0"
 description = "Daikin One+ integration for Home Assistant"
 authors = [{ name = "Zach Langbert", email = "zach.langbert@gmail.com" }]
