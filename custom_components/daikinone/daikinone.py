@@ -376,31 +376,35 @@ class DaikinOne:
         equipment: dict[str, DaikinEquipment] = {}
 
         # air handler
-        if payload.data["ctAHUnitType"] < 255:
-            model = payload.data["ctAHModelNoCharacter1_15"].strip()
-            serial = payload.data["ctAHSerialNoCharacter1_15"].strip()
-            eid = f"{model}-{serial}"
-            name = "Air Handler"
+        if "ctAHUnitType" in payload.data:
+            if payload.data["ctAHUnitType"] < 255:
+                model = payload.data["ctAHModelNoCharacter1_15"].strip()
+                serial = payload.data["ctAHSerialNoCharacter1_15"].strip()
+                eid = f"{model}-{serial}"
+                name = "Air Handler"
 
-            equipment[eid] = DaikinIndoorUnit(
-                id=eid,
-                thermostat_id=payload.id,
-                name=name,
-                model=model,
-                firmware_version=payload.data["ctAHControlSoftwareVersion"].strip(),
-                serial=serial,
-                mode=payload.data["ctAHMode"].strip().capitalize(),
-                current_airflow=payload.data["ctAHCurrentIndoorAirflow"],
-                fan_demand_requested_percent=round(payload.data["ctAHFanRequestedDemand"] / 2),
-                fan_demand_current_percent=round(payload.data["ctAHFanCurrentDemandStatus"] / 2),
-                heat_demand_requested_percent=round(payload.data["ctAHHeatRequestedDemand"] / 2),
-                heat_demand_current_percent=round(payload.data["ctAHHeatCurrentDemandStatus"] / 2),
-                cool_demand_requested_percent=None,
-                cool_demand_current_percent=None,
-                humidification_demand_requested_percent=round(payload.data["ctAHHumidificationRequestedDemand"] / 2),
-                dehumidification_demand_requested_percent=None,
-                power_usage=payload.data["ctIndoorPower"] / 10,
-            )
+                equipment[eid] = DaikinIndoorUnit(
+                    id=eid,
+                    thermostat_id=payload.id,
+                    name=name,
+                    model=model,
+                    firmware_version=payload.data["ctAHControlSoftwareVersion"].strip(),
+                    serial=serial,
+                    mode=payload.data["ctAHMode"].strip().capitalize(),
+                    current_airflow=payload.data["ctAHCurrentIndoorAirflow"],
+                    fan_demand_requested_percent=round(payload.data["ctAHFanRequestedDemand"] / 2),
+                    fan_demand_current_percent=round(payload.data["ctAHFanCurrentDemandStatus"] / 2),
+                    heat_demand_requested_percent=round(payload.data["ctAHHeatRequestedDemand"] / 2),
+                    heat_demand_current_percent=round(payload.data["ctAHHeatCurrentDemandStatus"] / 2),
+                    cool_demand_requested_percent=None,
+                    cool_demand_current_percent=None,
+                    humidification_demand_requested_percent=round(payload.data["ctAHHumidificationRequestedDemand"] / 2),
+                    dehumidification_demand_requested_percent=None,
+                    power_usage=payload.data["ctIndoorPower"] / 10,
+                )
+        elif "P1P2UnitType" in payload.data:
+            import pprint
+            pprint.pp(payload)
 
         # furnace
         if payload.data["ctIFCUnitType"] < 255:
